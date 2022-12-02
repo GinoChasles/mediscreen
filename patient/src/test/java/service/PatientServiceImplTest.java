@@ -1,6 +1,6 @@
 package service;
 
-import com.example.patient.Service.PatientServiceImp;
+import com.example.patient.service.PatientServiceImp;
 import com.example.patient.model.Patient;
 import com.example.patient.repository.PatientsRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Patient service impl test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PatientServiceImplTest {
 
@@ -34,6 +37,9 @@ public class PatientServiceImplTest {
     private List<Patient> patientList = new ArrayList<>();
     private long id = 1;
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         Date datePatient1 = new Date(1966 - 03 - 30);
@@ -41,7 +47,10 @@ public class PatientServiceImplTest {
         patientList.add(patient);
     }
 
-         @Test
+    /**
+     * Gets patient by id test.
+     */
+    @Test
             public void getPatientByIdTest() {
                 long id = 1;
                 when(repo.findById(Mockito.anyLong())).thenReturn(Optional.of(patient));
@@ -52,6 +61,9 @@ public class PatientServiceImplTest {
                 }
     }
 
+    /**
+     * Update test.
+     */
     @Test
     public void updateTest() {
         when(repo.findById(anyLong())).thenReturn(Optional.of(patient));

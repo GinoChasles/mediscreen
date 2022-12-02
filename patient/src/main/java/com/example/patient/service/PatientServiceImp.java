@@ -1,4 +1,4 @@
-package com.example.patient.Service;
+package com.example.patient.service;
 
 import com.example.patient.model.Patient;
 import com.example.patient.repository.PatientsRepo;
@@ -6,10 +6,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type Patient service imp.
+ */
 @Service
 public class PatientServiceImp implements PatientService {
     private final PatientsRepo patientsRepo;
 
+    /**
+     * Instantiates a new Patient service imp.
+     *
+     * @param repo the repo
+     */
     public PatientServiceImp(PatientsRepo repo) {
         patientsRepo = repo;
     }
