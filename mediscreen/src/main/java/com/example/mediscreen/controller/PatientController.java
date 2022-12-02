@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/patient")
 public class PatientController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -22,7 +23,7 @@ public class PatientController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Patient>> findById(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Patient> findById(@PathVariable(value = "id") long id) {
         logger.info("Searching patient with his id: " + id);
         Optional<Patient> result = patientServiceImp.findById(id);
         if (result.isEmpty()) {
@@ -30,19 +31,19 @@ public class PatientController {
             return ResponseEntity.notFound().build();
         } else {
             logger.info("Patient found : " + result);
-            return ResponseEntity.ok().body(result);
+            return ResponseEntity.ok().body(result.get());
         }
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<Patient> addFireStation(@RequestBody Patient patient) {
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
         logger.info("Creating patient folder in system.");
 
         return ResponseEntity.ok(patientServiceImp.insert(patient));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Patient> update(@PathVariable(value = "id") int id, @RequestBody Patient patient) {
+    public ResponseEntity<Patient> update(@PathVariable(value = "id") int id, @Valid @RequestBody Patient patient) {
         logger.info("Starting updating patient...");
         Patient patient1 = patientServiceImp.update(id, patient);
         if (patient1 == null) {

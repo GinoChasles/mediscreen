@@ -19,10 +19,6 @@ public class PatientServiceImp implements PatientService {
         return patientsRepo.findById(id);
     }
 
-    @Override
-    public Optional<Patient> findByPatient(long id) {
-        return null;
-    }
 
     @Override
     public Patient insert(Patient patient) {
