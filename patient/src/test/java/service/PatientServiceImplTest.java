@@ -1,8 +1,8 @@
 package service;
 
-import com.example.mediscreen.Service.PatientServiceImp;
-import com.example.mediscreen.model.Patient;
-import com.example.mediscreen.repository.PatientsRepo;
+import com.example.patient.Service.PatientServiceImp;
+import com.example.patient.model.Patient;
+import com.example.patient.repository.PatientsRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,15 +41,15 @@ public class PatientServiceImplTest {
         patientList.add(patient);
     }
 
-    @Test
-    public void getPatientByIdTest() {
-        long id = 1;
-        when(repo.findById(Mockito.anyLong())).thenReturn(Optional.of(patient));
-        Optional<Patient> optionalPatient = serviceImp.findById(id);
-        if (optionalPatient.isPresent()) {
-            Patient result = optionalPatient.get();
-            assertThat(result.getFirstname()).isEqualTo(patient.getFirstname());
-        }
+         @Test
+            public void getPatientByIdTest() {
+                long id = 1;
+                when(repo.findById(Mockito.anyLong())).thenReturn(Optional.of(patient));
+                Optional<Patient> optionalPatient = serviceImp.findById(id);
+                if (optionalPatient.isPresent()) {
+                    Patient result = optionalPatient.get();
+                    assertThat(result.getFirstname()).isEqualTo(patient.getFirstname());
+                }
     }
 
     @Test
@@ -64,4 +64,5 @@ public class PatientServiceImplTest {
             assertThat(patient1.getFirstname()).isEqualTo("Updating");
         }
     }
+
 }

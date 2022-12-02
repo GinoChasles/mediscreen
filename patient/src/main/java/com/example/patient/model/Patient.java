@@ -1,4 +1,4 @@
-package com.example.mediscreen.model;
+package com.example.patient.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 

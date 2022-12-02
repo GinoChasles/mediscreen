@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>mediscreen</artifactId>
+	<artifactId>patient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mediscreen</name>
-	<description>mediscreen patients api</description>
+	<name>patient</name>
+	<description>patients api</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -115,7 +115,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										com.example.mediscreen.MediscreenApplication
+										com.example.patient.PatientApplication
 									</mainClass>
 								</manifest>
 							</archive>
@@ -166,8 +166,7 @@
 				<version>0.8.5</version>
 				<configuration>
 					<excludes>
-						<exclude>com/example/mediscreen/model/**</exclude>
-<!--						<exclude>com/example/mediscreen/dto/**</exclude>-->
+						<exclude>com/example/patient/model/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>

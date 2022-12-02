@@ -1,7 +1,7 @@
-package com.example.mediscreen.Service;
+package com.example.patient.Service;
 
-import com.example.mediscreen.model.Patient;
-import com.example.mediscreen.repository.PatientsRepo;
+import com.example.patient.model.Patient;
+import com.example.patient.repository.PatientsRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package controller;
 
-import com.example.mediscreen.MediscreenApplication;
-import com.example.mediscreen.model.Patient;
+import com.example.patient.PatientApplication;
+import com.example.patient.model.Patient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -21,7 +20,7 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = MediscreenApplication.class)
+@SpringBootTest(classes = PatientApplication.class)
 @AutoConfigureMockMvc
 public class PatientControllerTest {
     @Autowired
@@ -76,5 +75,24 @@ public class PatientControllerTest {
                 .content(json);
 
         mockMvc.perform(mock).andExpect(status().isOk());
+    }
+
+    @Test
+    public void findByIdTest_NotFound() throws Exception {
+        mockMvc.perform(get("/patient/1000000"))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void updateTest_NotFound() throws Exception {
+        Patient patientZero = patient1;
+        patientZero.setFirstname("ThirdTest");
+        String json = mapper.writeValueAsString(patientZero);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/patient/10000000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound());
     }
 }

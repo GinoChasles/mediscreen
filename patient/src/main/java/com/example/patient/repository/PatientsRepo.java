@@ -1,6 +1,6 @@
-package com.example.mediscreen.repository;
+package com.example.patient.repository;
 
-import com.example.mediscreen.model.Patient;
+import com.example.patient.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

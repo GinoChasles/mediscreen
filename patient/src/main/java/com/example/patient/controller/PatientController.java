@@ -1,11 +1,10 @@
-package com.example.mediscreen.controller;
+package com.example.patient.controller;
 
-import com.example.mediscreen.Service.PatientServiceImp;
-import com.example.mediscreen.model.Patient;
+import com.example.patient.Service.PatientServiceImp;
+import com.example.patient.model.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
