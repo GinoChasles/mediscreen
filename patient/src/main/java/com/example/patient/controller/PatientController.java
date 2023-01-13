@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,6 +52,19 @@ public class PatientController {
         }
     }
 
+
+    @GetMapping("/")
+    public ResponseEntity<List<Patient>> findAll() {
+        logger.info("Searching all Patient");
+        List<Patient> noteList = patientServiceImp.findAll();
+        if (noteList.isEmpty()) {
+            logger.error("Patients not found");
+            return ResponseEntity.noContent().build();
+        } else {
+            logger.error("Patients found");
+            return ResponseEntity.ok(noteList);
+        }
+    }
     /**
      * Add patient response entity.
      *

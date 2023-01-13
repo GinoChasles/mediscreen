@@ -4,6 +4,7 @@ import com.example.patient.model.Patient;
 import com.example.patient.repository.PatientsRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,5 +50,10 @@ public class PatientServiceImp implements PatientService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<Patient> findAll() {
+        return patientsRepo.findAll();
     }
 }

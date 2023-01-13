@@ -2,6 +2,7 @@ package com.example.patient.service;
 
 import com.example.patient.model.Patient;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,4 +33,11 @@ public interface PatientService {
      * @return the patient
      */
     Patient update(long id, Patient patient);
+
+    /**
+     * Find all list.
+     *
+     * @return the list
+     */
+    List<Patient> findAll();
 }
