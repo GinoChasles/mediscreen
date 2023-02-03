@@ -56,4 +56,9 @@ public class PatientServiceImp implements PatientService {
     public List<Patient> findAll() {
         return patientsRepo.findAll();
     }
+
+    @Override
+    public void delete(long id) {
+        patientsRepo.deleteById(id);
+    }
 }

@@ -1,7 +1,7 @@
 package com.example.patient.controller;
 
-import com.example.patient.service.PatientServiceImp;
 import com.example.patient.model.Patient;
+import com.example.patient.service.PatientServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import java.util.Optional;
 /**
  * The type Patient controller.
  */
+@CrossOrigin(maxAge = 4800)
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
@@ -53,16 +54,17 @@ public class PatientController {
     }
 
 
+
     @GetMapping("/")
     public ResponseEntity<List<Patient>> findAll() {
         logger.info("Searching all Patient");
-        List<Patient> noteList = patientServiceImp.findAll();
-        if (noteList.isEmpty()) {
+        List<Patient> patientList = patientServiceImp.findAll();
+        if (patientList.isEmpty()) {
             logger.error("Patients not found");
             return ResponseEntity.noContent().build();
         } else {
-            logger.error("Patients found");
-            return ResponseEntity.ok(noteList);
+            logger.info("Patients found");
+            return ResponseEntity.ok(patientList);
         }
     }
     /**
@@ -95,6 +97,20 @@ public class PatientController {
         } else {
             logger.info("Patient updating ok !");
             return ResponseEntity.ok().body(patient1);
+        }
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") long id) {
+        logger.info("Starting deleting note...");
+        Optional<Patient> result = patientServiceImp.findById(id);
+        if (result.isEmpty()) {
+            logger.error("Patient not found");
+            return ResponseEntity.notFound().build();
+        } else {
+            patientServiceImp.delete(id);
+            logger.info("Patient is delete");
+            return ResponseEntity.ok("Deleted");
         }
     }
 }

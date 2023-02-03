@@ -40,4 +40,11 @@ public interface PatientService {
      * @return the list
      */
     List<Patient> findAll();
+
+    /**
+     * Delete.
+     *
+     * @param id the id
+     */
+    void delete(long id);
 }
