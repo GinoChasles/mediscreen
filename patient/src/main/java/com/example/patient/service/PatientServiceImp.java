@@ -45,7 +45,6 @@ public class PatientServiceImp implements PatientService {
             patientToUpdate.setFirstname(patient.getFirstname());
             patientToUpdate.setLastname(patient.getLastname());
             patientToUpdate.setPhone(patient.getPhone());
-
             return patientsRepo.save(patientToUpdate);
         } else {
             return null;

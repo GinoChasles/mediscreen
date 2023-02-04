@@ -1,2 +1,8 @@
-package com.example.assess.utils;public enum assess {
+package com.example.assess.utils;
+
+public enum Assess {
+    NONE,
+    BORDERLINE,
+    INDANGER,
+    EARLYONSET
 }
