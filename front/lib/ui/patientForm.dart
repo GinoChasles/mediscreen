@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/datasources/patient_repository.dart';
 import 'package:front/model/patient.dart';
+import 'package:front/providers/patientProvider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PatientForm extends StatefulWidget {
   final Patient? patient;
@@ -61,9 +63,9 @@ class _PatientFormState extends State<PatientForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
+    return Container(
+      // backgroundColor: Colors.white,
+      child: Center(
         child: Form(
             key: _formKey,
             child: Column(
@@ -172,6 +174,7 @@ class _PatientFormState extends State<PatientForm> {
                           patientRepository.updatePatient(id, patient);
                         } else {
                           patientRepository.postPatient(patient);
+                          Provider.of<PatientProvider>(context, listen: false).addPatient(patient);
                         }
                         Navigator.pop(context);
                       }

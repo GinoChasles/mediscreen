@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/datasources/patient_repository.dart';
 import 'package:front/model/patient.dart';
+import 'package:front/providers/patientProvider.dart';
 import 'package:front/ui/patientForm.dart';
+import 'package:provider/provider.dart';
 
 class PatientListTile extends StatefulWidget {
   final Patient patient;
@@ -13,6 +15,7 @@ class PatientListTile extends StatefulWidget {
 
 class _PatientListTileState extends State<PatientListTile> {
   PatientRepository patientRepository = new PatientRepository();
+  int selectedMenu = 1;
 
   String convertDateTimeDisplay(String date) {
     final DateTime displayDate = DateTime.parse(date);
@@ -23,37 +26,114 @@ class _PatientListTileState extends State<PatientListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(widget.patient.firstName.toString()),
-        Text(widget.patient.lastName.toString()),
-        Text(convertDateTimeDisplay(widget.patient.birthDate.toString())),
-        Text(widget.patient.gender.toString()),
-        Text(widget.patient.address.toString()),
-        Text(widget.patient.phone.toString()),
-        IconButton(
-            icon: Icon(
+    List<PopupMenuEntry<int>> popupItems = [
+      PopupMenuItem(
+        value: 3,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(
+              Icons.notes,
+            ),
+            Text("Notes")
+          ],
+        ),),
+      PopupMenuItem(
+        value: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(
               Icons.edit,
             ),
-            onPressed: () async {
-              await showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                        insetPadding: EdgeInsets.all(100),
-                        content: PatientForm(
-                          patient: widget.patient,
-                          update: true,
-                        ));
-                  });
-            }),
-        IconButton(
-            onPressed: () {
-              patientRepository.deletePatient(widget.patient.id!);
+            Text("Modify")
+          ],
+        ),
+        onTap: () async {
+          await showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                    scrollable: true,
+                    content: PatientForm(
+                      patient: widget.patient,
+                      update: true,
+                    ));
+              }).then((value) => Navigator.of(context).pop());
+        },
+      ),
+      PopupMenuItem(
+        value: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          children: [Icon(Icons.delete), Text("Delete")],
+        ),
+        onTap: () {
+          patientRepository.deletePatient(widget.patient.id!);
+          Provider.of<PatientProvider>(context, listen: false).deletePatient(widget.patient.id!);
+        },
+      )
+    ];
+
+    return Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child: Table(
+            columnWidths: {
+              0: FixedColumnWidth(50),
+              1: FixedColumnWidth(50),
+              2: FixedColumnWidth(50),
+              3: FixedColumnWidth(10),
+              4: FixedColumnWidth(80),
+              5: FixedColumnWidth(50),
+              6: FixedColumnWidth(10),
+              7: FixedColumnWidth(10),
             },
-            icon: Icon(Icons.delete))
-      ],
-    );
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            border: TableBorder(
+              bottom: BorderSide(),
+            ),
+            children: [
+              TableRow(
+                children: [
+                  Center(
+                    child: Text(widget.patient.firstName.toString(),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Center(
+                    child: Text(widget.patient.lastName.toString(),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Center(
+                    child: Text(
+                        convertDateTimeDisplay(
+                            widget.patient.birthDate.toString()),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Center(
+                    child: Text(widget.patient.gender.toString(),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Center(
+                    child: Text(
+                      widget.patient.address.toString(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Center(child: Text(widget.patient.phone.toString())),
+                  PopupMenuButton<int>(
+                    splashRadius: 16,
+                      initialValue: selectedMenu,
+                      // Callback that sets the selected popup menu item.
+                      onSelected: (value) {
+                        setState(() {
+                          selectedMenu = value;
+                        });
+                        if(selectedMenu == 3) {print("oh yeah mother fuckeeeeer");}
+                      },
+                      itemBuilder: (BuildContext context) => popupItems),
+                ],
+              ),
+            ]));
   }
 }

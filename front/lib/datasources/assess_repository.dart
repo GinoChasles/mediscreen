@@ -6,8 +6,8 @@ class AssessRepository {
   final Client client = Client();
   AssessRepository();
 
-  Assess? getAssess(int id) {
-    dynamic res = client.get(Uri.parse("http://localhost:8080/assess/$id"));
+  Future<Assess?> getAssess(int id) async {
+    dynamic res = await client.get(Uri.parse("http://localhost:8080/assess/$id"));
     Assess? assess;
     if (res.statusCode == 200) {
       assess = Assess.fromJson(json.decode(res));
