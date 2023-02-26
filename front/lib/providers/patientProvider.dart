@@ -12,10 +12,13 @@ class PatientProvider with ChangeNotifier {
     _patientList.add(patient);
     update();
   }
+
   List<Patient> get patientList {
     return _patientList;
   }
+
   void addPatients(List<Patient> patientsList) {
+    _patientList.clear();
     _patientList.addAll(patientsList);
     update();
   }
@@ -23,5 +26,20 @@ class PatientProvider with ChangeNotifier {
   void deletePatient(int id) {
     _patientList.removeWhere((element) => element.id == id);
     update();
+  }
+
+  void updatePatient(int id, Patient patient) {
+    List<Patient> updatedList = List.empty(growable: true);
+    _patientList.forEach((element) {
+      if (element.id == id) {
+        element = patient;
+        updatedList.add(patient);
+      } else {
+        updatedList.add(element);
+      }
+    });
+    _patientList = updatedList;
+    update();
+
   }
 }

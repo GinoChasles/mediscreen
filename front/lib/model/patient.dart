@@ -11,7 +11,7 @@ class Patient {
 
   Patient.empty();
   
-  Patient( this.firstName, this.lastName, this.birthDate,
+  Patient(this.id, this.firstName, this.lastName, this.birthDate,
       this.gender, this.address, this.phone) ;
 
   Patient.fromJson(Map<String, dynamic> json)

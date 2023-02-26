@@ -2,7 +2,6 @@ import 'package:front/model/note.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 
-
 const URL = "http://localhost:8082";
 
 class NoteRepository {
@@ -10,8 +9,7 @@ class NoteRepository {
   NoteRepository();
 
   Future<List<Note>> getNote(int id) async {
-    dynamic res =
-        await client.get(Uri.parse("$URL/patHistory/$id/all"));
+    dynamic res = await client.get(Uri.parse("$URL/patHistory/$id/all"));
     dynamic result = json.decode(res.body) as List;
     List<Note> noteList = [];
     if (res.statusCode == 200) {
@@ -20,21 +18,22 @@ class NoteRepository {
     return noteList;
   }
 
-  void postNote(Note note) async {
+  Future<Note> postNote(Note note) async {
     final headers = {'Content-Type': 'application/json'};
-    await client.post(Uri.parse("$URL/patHistory/add"),
+    final result = await client.post(Uri.parse("$URL/patHistory/add"),
         headers: headers, body: json.encode(note.toJson()));
+    return Note.fromJson(json.decode(result.body));
   }
 
-  void updateNote(int id, Note note) async {
+  Future<Note> updateNote(int id, Note note) async {
     final headers = {'Content-Type': 'application/json'};
-    await client.put(Uri.parse("$URL/patHistory/$id"),
+    final result = await client.put(Uri.parse("$URL/patHistory/$id"),
         headers: headers, body: json.encode(note.toJson()));
+    return Note.fromJson(json.decode(result.body));
   }
 
   void deleteNote(int id) async {
     final headers = {'Content-Type': 'application/json'};
-    await client.delete(Uri.parse("$URL/patHistory/$id"),
-        headers: headers);
+    await client.delete(Uri.parse("$URL/patHistory/$id"), headers: headers);
   }
 }

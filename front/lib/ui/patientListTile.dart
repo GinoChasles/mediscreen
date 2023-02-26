@@ -37,7 +37,8 @@ class _PatientListTileState extends State<PatientListTile> {
             ),
             Text("Notes")
           ],
-        ),),
+        ),
+      ),
       PopupMenuItem(
         value: 1,
         child: Row(
@@ -49,29 +50,29 @@ class _PatientListTileState extends State<PatientListTile> {
             Text("Modify")
           ],
         ),
-        onTap: () async {
-          await showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                    scrollable: true,
-                    content: PatientForm(
-                      patient: widget.patient,
-                      update: true,
-                    ));
-              }).then((value) => Navigator.of(context).pop());
-        },
+        // onTap: () async {
+        //   await showDialog(
+        //       context: context,
+        //       builder: (_) {
+        //         return AlertDialog(
+        //             scrollable: true,
+        //             content: PatientForm(
+        //               patient: widget.patient,
+        //               update: true,
+        //             ));
+        //       }).then((value) => Navigator.of(context).pop());
+        // },
       ),
       PopupMenuItem(
         value: 2,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
           children: [Icon(Icons.delete), Text("Delete")],
         ),
         onTap: () {
           patientRepository.deletePatient(widget.patient.id!);
-          Provider.of<PatientProvider>(context, listen: false).deletePatient(widget.patient.id!);
+          Provider.of<PatientProvider>(context, listen: false)
+              .deletePatient(widget.patient.id!);
         },
       )
     ];
@@ -122,14 +123,28 @@ class _PatientListTileState extends State<PatientListTile> {
                   ),
                   Center(child: Text(widget.patient.phone.toString())),
                   PopupMenuButton<int>(
-                    splashRadius: 16,
+                      splashRadius: 16,
                       initialValue: selectedMenu,
                       // Callback that sets the selected popup menu item.
-                      onSelected: (value) {
+                      onSelected: (value) async {
                         setState(() {
                           selectedMenu = value;
                         });
-                        if(selectedMenu == 3) {print("oh yeah mother fuckeeeeer");}
+                        if (selectedMenu == 3) {
+                          print("oh yeah mother fuckeeeeer");
+                        }
+                        if (selectedMenu == 1) {
+                          await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                    scrollable: true,
+                                    content: PatientForm(
+                                      patient: widget.patient,
+                                      update: true,
+                                    ));
+                              });
+                        }
                       },
                       itemBuilder: (BuildContext context) => popupItems),
                 ],

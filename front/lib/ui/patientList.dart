@@ -16,6 +16,7 @@ class PatientList extends StatefulWidget {
 class _PatientListState extends State<PatientList> {
   late Future<List<Patient>> list;
   PatientRepository patientRepository = new PatientRepository();
+
   @override
   void initState() {
     list = patientRepository.patientList();
@@ -23,10 +24,10 @@ class _PatientListState extends State<PatientList> {
   }
 
   void getValues() async {
-    
     List<Patient> pList = await list;
     Provider.of<PatientProvider>(context, listen: false).addPatients(pList);
   }
+
   @override
   Widget build(BuildContext context) {
     getValues();
@@ -40,7 +41,19 @@ class _PatientListState extends State<PatientList> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
-                child: Text("Patient's List"),
+                child: TextButton(
+                  child: Text("Patient's List"),
+                  onPressed: () {
+                    setState(() {
+                      List<Patient> patientUpdated = List.empty(growable: true);
+                      patientRepository
+                          .patientList()
+                          .then((value) => patientUpdated = value);
+                      Provider.of<PatientProvider>(context, listen: false)
+                          .addPatients(patientUpdated);
+                    });
+                  },
+                ),
               ),
               ElevatedButton.icon(
                   onPressed: () async {

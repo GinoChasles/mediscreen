@@ -21,9 +21,10 @@ class _PatientFormState extends State<PatientForm> {
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _birthDateController;
-  late final TextEditingController _genderController;
+  // late final TextEditingController _genderController;
   late final TextEditingController _addressController;
   late final TextEditingController _phoneController;
+  String? genderValue = "M";
 
   @override
   void initState() {
@@ -31,13 +32,11 @@ class _PatientFormState extends State<PatientForm> {
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _birthDateController = TextEditingController();
-    _genderController = TextEditingController();
     _addressController = TextEditingController();
     _phoneController = TextEditingController();
 
     _firstNameController.text = widget.patient?.firstName ?? "";
     _lastNameController.text = widget.patient?.lastName ?? "";
-    _genderController.text = widget.patient?.gender ?? "";
     _addressController.text = widget.patient?.address ?? "";
     _phoneController.text = widget.patient?.phone ?? "";
     if (widget.update) {
@@ -46,7 +45,6 @@ class _PatientFormState extends State<PatientForm> {
     } else {
       _birthDateController.text = "";
     }
-
   }
 
   @override
@@ -54,7 +52,6 @@ class _PatientFormState extends State<PatientForm> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _birthDateController.dispose();
-    _genderController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
 
@@ -63,8 +60,12 @@ class _PatientFormState extends State<PatientForm> {
 
   @override
   Widget build(BuildContext context) {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("Mâle"), value: "M"),
+      DropdownMenuItem(child: Text("Female"), value: "F"),
+    ];
+
     return Container(
-      // backgroundColor: Colors.white,
       child: Center(
         child: Form(
             key: _formKey,
@@ -73,16 +74,12 @@ class _PatientFormState extends State<PatientForm> {
                 TextFormField(
                   decoration: InputDecoration(labelText: "FirstName"),
                   controller: _firstNameController,
-                  // The validator receives the text that the user has entered.
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a firstName';
                     }
                     return null;
                   },
-                  // onChanged: (value) {
-                  //   _firstNameController.text = value;
-                  // },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: "LastName"),
@@ -94,13 +91,10 @@ class _PatientFormState extends State<PatientForm> {
                     }
                     return null;
                   },
-                  // onChanged: (value) {},
                 ),
                 TextFormField(
-                    // onChanged: (value) {},
                     decoration: InputDecoration(labelText: "BirthDate"),
                     controller: _birthDateController,
-                    // The validator receives the text that the user has entered.
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a birthdate';
@@ -126,29 +120,23 @@ class _PatientFormState extends State<PatientForm> {
                             Patient.convertDateTimeDisplay(birthdate);
                       }
                     }),
-                TextFormField(
-                  // onChanged: (value) {},
-                  decoration: InputDecoration(labelText: "Gender"),
-                  controller: _genderController,
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a gender';
-                    }
-                    return null;
+                DropdownButton(
+                  isExpanded: true,
+                  value: genderValue,
+                  items: menuItems,
+                  onChanged: (String? value) {
+                    setState(() {
+                      genderValue = value;
+                    });
                   },
                 ),
                 TextFormField(
-                  // onChanged: (value) {},
                   decoration: InputDecoration(labelText: "Address"),
                   controller: _addressController,
-                  // The validator receives the text that the user has entered.
                 ),
                 TextFormField(
-                  // onChanged: (value) {},
                   decoration: InputDecoration(labelText: "Phone"),
                   controller: _phoneController,
-                  // The validator receives the text that the user has entered.
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -162,19 +150,30 @@ class _PatientFormState extends State<PatientForm> {
                         }
 
                         Patient patient = Patient(
+                          1,
                             _firstNameController.text,
                             _lastNameController.text,
                             DateFormat('yyyy-MM-dd')
                                 .parse(_birthDateController.text),
-                            _genderController.text,
+                            genderValue,
                             _addressController.text,
                             _phoneController.text);
 
                         if (widget.update) {
-                          patientRepository.updatePatient(id, patient);
+                          patientRepository
+                              .updatePatient(id, patient)
+                              .then((value) => patient = value)
+                              .whenComplete(() => Provider.of<PatientProvider>(
+                                      context,
+                                      listen: false)
+                                  .updatePatient(patient.id!, patient));
+                          ;
                         } else {
-                          patientRepository.postPatient(patient);
-                          Provider.of<PatientProvider>(context, listen: false).addPatient(patient);
+                          patientRepository
+                              .postPatient(patient)
+                              .then((value) => patient = value);
+                          Provider.of<PatientProvider>(context, listen: false)
+                              .addPatient(patient);
                         }
                         Navigator.pop(context);
                       }

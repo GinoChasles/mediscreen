@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:front/model/patient.dart';
 
 const URL = "http://localhost:8081";
+
 class PatientRepository {
   final Client client = Client();
   PatientRepository();
@@ -37,26 +38,27 @@ class PatientRepository {
     return patientList;
   }
 
-  void postPatient(Patient patient) async {
+  Future<Patient> postPatient(Patient patient) async {
     final headers = {'Content-Type': 'application/json'};
-    await client.post(Uri.parse("$URL/patient/add"),
+    final result = await client.post(Uri.parse("$URL/patient/add"),
         headers: headers, body: json.encode(patient.toJson()));
+    return Patient.fromJson(json.decode(result.body));
   }
 
-  void updatePatient(int id, Patient patient) async {
+  Future<Patient> updatePatient(int id, Patient patient) async {
     final headers = {'Content-Type': 'application/json'};
     try {
-      print(patient.toJson());
-    await client.put(Uri.parse("$URL/patient/$id"),
-        headers: headers, body: json.encode(patient.toJson()));
+      final result = await client.put(Uri.parse("$URL/patient/$id"),
+          headers: headers, body: json.encode(patient.toJson()));
+      return Patient.fromJson(json.decode(result.body));
     } catch (e) {
       print(e);
+      return patient;
     }
   }
 
   void deletePatient(int id) async {
     final headers = {'Content-Type': 'application/json'};
-    await client.delete(Uri.parse("$URL/patient/$id"),
-        headers: headers);
+    await client.delete(Uri.parse("$URL/patient/$id"), headers: headers);
   }
 }
