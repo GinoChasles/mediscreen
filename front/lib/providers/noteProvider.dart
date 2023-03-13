@@ -18,19 +18,20 @@ class NoteProvider extends ChangeNotifier {
   }
 
   void addNotes(List<Note> noteList) {
+    _noteList.clear();
     _noteList.addAll(noteList);
     update();
   }
 
-  void deleteNote(int id) {
-    _noteList.removeWhere((element) => element.id == id);
+  void deleteNote(String id) {
+    _noteList.removeWhere((element) => element.key == id);
     update();
   }
 
-  void updateNote(int id, Note note) {
+  void updateNote(dynamic id, Note note) {
     List<Note> updatedList = List.empty(growable: true);
     _noteList.forEach((element) {
-      if (element.id == id) {
+      if (element.key == id) {
         element = note;
         updatedList.add(note);
       } else {

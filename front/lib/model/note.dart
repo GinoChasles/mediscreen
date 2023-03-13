@@ -1,15 +1,20 @@
 class Note {
-  int? id;
+  dynamic key;
+  int? patId;
   String? notes;
 
   Note(String notes);
 
+  Note.empty();
+
   Note.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : key = json['key'],
+        patId = json["patId"],
         notes = json['notes'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
+        'key': key,
+        'patId' : patId,
         'notes': notes,
       };
 }

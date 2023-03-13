@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class NoteListTile extends StatefulWidget {
   final Note note;
-  const NoteListTile({Key? key, required this.note}) : super(key: key);
+  final int? patId;
+  const NoteListTile({Key? key, required this.note, required this.patId}) : super(key: key);
 
   @override
   State<NoteListTile> createState() => _NoteListTileState();
@@ -45,6 +46,7 @@ class _NoteListTileState extends State<NoteListTile> {
                       return AlertDialog(
                           scrollable: true,
                           content: NoteForm(
+                            patId: widget.patId,
                             note: widget.note,
                             update: true,
                           ));
@@ -56,9 +58,9 @@ class _NoteListTileState extends State<NoteListTile> {
             ),
             IconButton(
               onPressed: () {
-                noteRepository.deleteNote(widget.note.id!);
+                noteRepository.deleteNote(widget.note.key!);
                 Provider.of<NoteProvider>(context, listen: false)
-                    .deleteNote(widget.note.id!);
+                    .deleteNote(widget.note.key!);
               },
               icon: Icon(Icons.delete),
             ),

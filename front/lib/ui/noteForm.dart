@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:front/datasources/note_repository.dart';
 import 'package:front/model/note.dart';
@@ -8,19 +6,22 @@ import 'package:provider/provider.dart';
 
 class NoteForm extends StatefulWidget {
   final Note? note;
+  final int? patId;
   final bool update;
-  const NoteForm({Key? key, this.note, this.update = false}) : super(key: key);
+  const NoteForm(
+      {Key? key, this.note, this.update = false, required this.patId})
+      : super(key: key);
 
   @override
   State<NoteForm> createState() => _NoteFormState();
 }
 
 class _NoteFormState extends State<NoteForm> {
-final NoteRepository noteRepository = new NoteRepository();
+  final NoteRepository noteRepository = new NoteRepository();
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _noteController;
 
-@override
+  @override
   void initState() {
     _noteController = TextEditingController();
     super.initState();
@@ -31,6 +32,7 @@ final NoteRepository noteRepository = new NoteRepository();
     _noteController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,33 +51,32 @@ final NoteRepository noteRepository = new NoteRepository();
                     return null;
                   },
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        late int id;
-                        if (widget.note!.id != null) {
-                          id = widget.note!.id!;
-                        }
+                        Note note = Note.empty();
+                        note.notes = _noteController.text;
+                        note.patId = widget.patId;
+                        note.key = widget.note?.key!;
 
-                        Note note = Note(_noteController.text);
+                        if (widget.note?.key != null) {
+                          note.key = widget.note!.key!;
+                        }
 
                         if (widget.update) {
                           noteRepository
-                              .updateNote(id, note)
+                              .updateNote(note.key, note)
                               .then((value) => note = value)
                               .whenComplete(() => Provider.of<NoteProvider>(
                                       context,
                                       listen: false)
-                                  .updateNote(note.id!, note));
-                          ;
+                                  .updateNote(note.key, note));
                         } else {
-                          noteRepository
-                              .postNote(note)
-                              .then((value) => note = value);
+                          noteRepository.postNote(note).then((value) =>
+                              {note = value, widget.note?.key = value.key});
                           Provider.of<NoteProvider>(context, listen: false)
                               .addNote(note);
                         }

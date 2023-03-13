@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/datasources/patient_repository.dart';
 import 'package:front/model/patient.dart';
 import 'package:front/providers/patientProvider.dart';
+import 'package:front/ui/noteList.dart';
 import 'package:front/ui/patientForm.dart';
 import 'package:provider/provider.dart';
 
@@ -131,7 +132,11 @@ class _PatientListTileState extends State<PatientListTile> {
                           selectedMenu = value;
                         });
                         if (selectedMenu == 3) {
-                          print("oh yeah mother fuckeeeeer");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NoteList(patient: widget.patient,)),
+                          );
                         }
                         if (selectedMenu == 1) {
                           await showDialog(
