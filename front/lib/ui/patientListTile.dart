@@ -4,6 +4,7 @@ import 'package:front/model/patient.dart';
 import 'package:front/providers/patientProvider.dart';
 import 'package:front/ui/noteList.dart';
 import 'package:front/ui/patientForm.dart';
+import 'package:front/ui/rapport.dart';
 import 'package:provider/provider.dart';
 
 class PatientListTile extends StatefulWidget {
@@ -28,6 +29,18 @@ class _PatientListTileState extends State<PatientListTile> {
   @override
   Widget build(BuildContext context) {
     List<PopupMenuEntry<int>> popupItems = [
+       PopupMenuItem(
+        value: 4,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(
+              Icons.folder,
+            ),
+            Text("Rapport")
+          ],
+        ),
+      ),
       PopupMenuItem(
         value: 3,
         child: Row(
@@ -149,6 +162,13 @@ class _PatientListTileState extends State<PatientListTile> {
                                       update: true,
                                     ));
                               });
+                        }
+                        if (selectedMenu == 4) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Rapport(patId: widget.patient.id!,)),
+                          );
                         }
                       },
                       itemBuilder: (BuildContext context) => popupItems),

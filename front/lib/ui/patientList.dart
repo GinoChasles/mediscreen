@@ -36,7 +36,7 @@ class _PatientListState extends State<PatientList> {
       builder: (context, item, child) {
         return Container(
           height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

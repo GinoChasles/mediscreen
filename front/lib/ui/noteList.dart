@@ -38,41 +38,47 @@ class _NoteListState extends State<NoteList> {
       appBar: AppBar(
         title: const Text("Patient's Notes List"),
       ),
-      body: Consumer<NoteProvider>(
-        builder: (context, item, child) {
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Center(
-                //   child: Text("Patient's Notes List"),
-                // ),
-                Center(
-                  child: ElevatedButton.icon(
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (_) {
-                              return AlertDialog(
-                                  insetPadding: EdgeInsets.all(100),
-                                  content: NoteForm(patId: widget.patient.id));
-                            });
-                      },
-                      icon: Icon(Icons.add),
-                      label: Text("Add")),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      itemBuilder: (context, index) => new NoteListTile(
-                          patId: widget.patient.id, note: item.noteList[index]),
-                      itemCount: item.noteList.length),
-                ),
-              ],
-            ),
-          );
-        },
+      body: Center(
+        child: Consumer<NoteProvider>(
+          builder: (context, item, child) {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Center(
+                  //   child: Text("Patient's Notes List"),
+                  // ),
+                  Center(
+                    child: ElevatedButton.icon(
+                        onPressed: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                    scrollable: true,
+                                    insetPadding: EdgeInsets.all(100),
+                                    content:
+                                        NoteForm(patId: widget.patient.id));
+                              });
+                        },
+                        icon: Icon(Icons.add),
+                        label: Text("Add")),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemBuilder: (context, index) => new NoteListTile(
+                            patId: widget.patient.id,
+                            note: item.noteList[index]),
+                        itemCount: item.noteList.length),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

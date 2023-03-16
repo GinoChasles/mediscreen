@@ -4,16 +4,22 @@ import 'package:front/model/note.dart';
 import 'package:front/providers/noteProvider.dart';
 import 'package:provider/provider.dart';
 
-class NoteForm extends StatefulWidget {
-  final Note? note;
-  final int? patId;
-  const NoteForm({Key? key, this.note, required this.patId}) : super(key: key);
+class NoteFormUpdate extends StatefulWidget {
+  final Note note;
+  final int patId;
+  final String keyNote;
+  const NoteFormUpdate(
+      {Key? key,
+      required this.note,
+      required this.patId,
+      required this.keyNote})
+      : super(key: key);
 
   @override
-  State<NoteForm> createState() => _NoteFormState();
+  State<NoteFormUpdate> createState() => _NoteFormUpdateState();
 }
 
-class _NoteFormState extends State<NoteForm> {
+class _NoteFormUpdateState extends State<NoteFormUpdate> {
   final NoteRepository noteRepository = new NoteRepository();
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _noteController;
@@ -21,6 +27,7 @@ class _NoteFormState extends State<NoteForm> {
   @override
   void initState() {
     _noteController = TextEditingController();
+    _noteController.text = widget.note.notes ?? '';
     super.initState();
   }
 
@@ -59,21 +66,20 @@ class _NoteFormState extends State<NoteForm> {
                         Note note = Note.empty();
                         note.notes = _noteController.text;
                         note.patId = widget.patId;
-                        note.key = widget.note?.key;
+                        note.key = widget.note.key;
 
                         noteRepository
-                            .postNote(note)
-                            .then((value) => {note = value})
-                            .whenComplete(
-                          () {
-                            Provider.of<NoteProvider>(context, listen: false)
-                                .addNote(note);
-                            Navigator.pop(context);
-                          },
-                        );
+                            .updateNote(note.key, note)
+                            .then((value) => note = value)
+                            .whenComplete(() => Provider.of<NoteProvider>(
+                                    context,
+                                    listen: false)
+                                .updateNote(note.key, note));
+
+                        Navigator.pop(context);
                       }
                     },
-                    child: Text("Submit"),
+                    child: Text('Update'),
                   ),
                 ),
               ],
