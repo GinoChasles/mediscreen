@@ -2,6 +2,7 @@ package com.example.assess.utils;
 
 import com.example.assess.model.Note;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,14 @@ public class Utils {
 
     public static int getAssesCompt(List<Note> notes) {
         int compt = 0;
+
+        List<String> notesList = new ArrayList<String>();
+
+        for(int j=0; j < notes.size(); j++) {
+            notesList.add(notes.get(j).getNote().toLowerCase());
+        }
+        String str = String.join("", notesList);
+
         List<String> allAssess = Arrays.asList(
                 "Hémoglobine A1C",
                 "Microalbumine",
@@ -22,10 +31,21 @@ public class Utils {
                 "Vertige",
                 "Rechute",
                 "Réaction",
-                "Anticorps"
+                "Anticorps",
+                "Hemoglobin A1C",
+                "Microalbumine",
+                "Size",
+                "Weight",
+                "Smoker",
+                "Abnormal",
+                "Cholesterol",
+                "Vertigo",
+                "Relapse",
+                "Reaction",
+                "Antibodies"
         );
         for (int i = 0; i < allAssess.size(); i++) {
-            if (notes.contains(allAssess.get(i))) {
+            if (str.contains(allAssess.get(i).toLowerCase())) {
                 compt++;
             }
         }

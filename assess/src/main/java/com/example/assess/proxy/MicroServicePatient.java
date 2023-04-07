@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "microservice-patients", url = "localhost:8081")
 public interface MicroServicePatient {
-    @GetMapping(value = "/patient/{id}")
-    Patient getPatient(@PathVariable("id") long id);
+    @GetMapping(value = "/patient/{id}" , produces = "application/json")
+    String getPatient(@PathVariable("id") long id);
 }

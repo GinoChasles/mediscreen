@@ -1,5 +1,7 @@
 package com.example.assess.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -9,10 +11,15 @@ import java.util.Date;
  * The type Patient.
  */
 public class Patient {
-    private String firstName;
-    private String lastName;
-    private Date birthDate;
+    private Long id;
+    private String firstname;
+    private String lastname;
+    private Date birthdate;
     private String gender;
+    private String address;
+    private String phone;
+    @JsonIgnore
+    private int age;
 
     /**
      * Instantiates a new Patient.
@@ -23,10 +30,20 @@ public class Patient {
      * @param gender    the gender
      */
     public Patient(String firstName, String lastName, Date birthDate, String gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
+        this.firstname = firstName;
+        this.lastname = lastName;
+        this.birthdate = birthDate;
         this.gender = gender;
+    }
+
+    public Patient(Long id, String firstname, String lastname, Date birthdate, String gender, String address, String phone) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
     }
 
     /**
@@ -35,76 +52,60 @@ public class Patient {
     public Patient() {
     }
 
-    /**
-     * Gets gender.
-     *
-     * @return the gender
-     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
     public String getGender() {
         return gender;
     }
 
-    /**
-     * Sets gender.
-     *
-     * @param gender the gender
-     */
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    /**
-     * Gets first name.
-     *
-     * @return the first name
-     */
-    public String getFirstName() {
-        return firstName;
+    public String getAddress() {
+        return address;
     }
 
-    /**
-     * Sets first name.
-     *
-     * @param firstName the first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    /**
-     * Gets last name.
-     *
-     * @return the last name
-     */
-    public String getLastName() {
-        return lastName;
+    public String getPhone() {
+        return phone;
     }
 
-    /**
-     * Sets last name.
-     *
-     * @param lastName the last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets birth date.
-     *
-     * @return the birth date
-     */
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    /**
-     * Sets birth date.
-     *
-     * @param birthDate the birth date
-     */
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     /**
@@ -114,9 +115,11 @@ public class Patient {
      */
     public int getAge() {
         LocalDate now = LocalDate.now();
-        LocalDate birthDateLocal = birthDate.toInstant()
+        LocalDate birthDateLocal = this.getBirthdate().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
         return Period.between(birthDateLocal, now).getYears();
     }
+
+
 }

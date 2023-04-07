@@ -2,6 +2,7 @@ package com.example.assess.controler;
 
 import com.example.assess.model.AssessPatient;
 import com.example.assess.service.AssessService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,9 @@ public class AssessController {
      * @param id the id
      * @return the assess
      */
-    @GetMapping("/id")
-    ResponseEntity<AssessPatient> getAssess(@PathVariable(value = "id") long id) {
+    @GetMapping("/{id}")
+    ResponseEntity<AssessPatient> getAssess(@PathVariable(value = "id") long id) throws JsonProcessingException {
+
         return ResponseEntity.ok(assessService.getAssess(id));
     }
 }
