@@ -1,2 +1,4 @@
-package com.example.notes.controller;public class NoteControllerTest {
+package com.example.notes.controller;
+
+public class NoteControllerTest {
 }

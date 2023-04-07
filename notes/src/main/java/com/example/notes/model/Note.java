@@ -8,12 +8,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "Notes")
 public class Note {
+
     @Id
-    private long id;
+    private String key;
+
 
     private long patId;
 
-    private String notes;
+
+    private String note;
 
 
     /**
@@ -25,32 +28,28 @@ public class Note {
     /**
      * Instantiates a new Note.
      *
-     * @param id    the id
+     *
      * @param patId the pat id
-     * @param notes the notes
+     * @param note the notes
      */
-    public Note(long id, long patId, String notes) {
-        this.id = id;
+    public Note( long patId, String note) {
         this.patId = patId;
-        this.notes = notes;
+        this.note = note;
     }
 
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public long getId() {
-        return id;
+
+    public Note(String key, long patId, String note) {
+        this.key = key;
+        this.patId = patId;
+        this.note = note;
     }
 
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
@@ -76,16 +75,25 @@ public class Note {
      *
      * @return the notes
      */
-    public String getNotes() {
-        return notes;
+    public String getNote() {
+        return note;
     }
 
     /**
      * Sets notes.
      *
-     * @param notes the notes
+     * @param note the notes
      */
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "key='" + key + '\'' +
+                ", patId=" + patId +
+                ", notes='" + note + '\'' +
+                '}';
     }
 }

@@ -1,2 +1,4 @@
-package com.example.notes.service;public class NoteServiceTest {
+package com.example.notes.service;
+
+public class NoteServiceTest {
 }

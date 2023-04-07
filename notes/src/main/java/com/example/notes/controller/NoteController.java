@@ -2,6 +2,7 @@ package com.example.notes.controller;
 
 import com.example.notes.model.Note;
 import com.example.notes.service.NoteService;
+import com.example.notes.service.NoteServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
  * The type Note controller.
  */
 @RestController
+@CrossOrigin(maxAge = 4800)
 @RequestMapping("/patHistory")
 public class NoteController {
     private final NoteService noteService;
@@ -27,7 +29,7 @@ public class NoteController {
      *
      * @param service the service
      */
-    public NoteController(NoteService service) {
+    public NoteController(NoteServiceImpl service) {
         noteService = service;
     }
 
@@ -39,7 +41,7 @@ public class NoteController {
      * @return the response entity
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Note> findById(@PathVariable(value = "id") long id) {
+    public ResponseEntity<Note> findById(@PathVariable(value = "id") String id) {
         logger.info("Searching note with his id: " + id);
         Optional<Note> result = noteService.findById(id);
         if (result.isEmpty()) {
@@ -78,13 +80,13 @@ public class NoteController {
      */
     @GetMapping("/{id}/all")
     public ResponseEntity<List<Note>> findAllById(@PathVariable(value = "id") long id) {
-        logger.info("Searching all notes for patId" + id);
+        logger.info("Searching all notes for patId " + id);
         List<Note> noteList = noteService.findByPatId(id);
         if (noteList.isEmpty()) {
             logger.error("notes not found");
             return ResponseEntity.noContent().build();
         } else {
-            logger.error("notes found");
+            logger.info("notes found");
             return ResponseEntity.ok(noteList);
         }
     }
@@ -102,6 +104,12 @@ public class NoteController {
         return ResponseEntity.ok(noteService.insert(note));
     }
 
+    @PostMapping(value = "/addAll")
+    public ResponseEntity<?> addNote(@RequestBody List<Note> noteList) {
+        logger.info("Ajouts de la liste des notes");
+        noteService.addAll(noteList);
+        return ResponseEntity.ok("ajout terminé");
+    }
 
     /**
      * Update response entity.
@@ -111,7 +119,7 @@ public class NoteController {
      * @return the response entity
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Note> update(@PathVariable(value = "id") long id, @RequestBody Note note) {
+    public ResponseEntity<Note> update(@PathVariable(value = "id") String id, @RequestBody Note note) {
         logger.info("Starting updating note...");
         Note note1 = noteService.update(id, note);
         if (note1 == null) {
@@ -129,8 +137,8 @@ public class NoteController {
      * @param id the id
      * @return the response entity
      */
-    @DeleteMapping(value = "/id")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") long id) {
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") String id) {
         logger.info("Starting deleting note...");
         Optional<Note> result = noteService.findById(id);
         if (result.isEmpty()) {
@@ -143,5 +151,12 @@ public class NoteController {
             return ResponseEntity.ok("Deleted");
         }
 
+    }
+
+    @DeleteMapping(value = "/")
+    public ResponseEntity<?> deleteAll() {
+        logger.info("Starting deleting all notes...");
+        noteService.deleteAll();
+        return ResponseEntity.ok("Deleted");
     }
 }

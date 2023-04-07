@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NoteService {
+public class NoteServiceImpl implements NoteService{
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private final NoteRepository noteRepository;
 
-    public NoteService(NoteRepository repo) {
+    public NoteServiceImpl(NoteRepository repo) {
         noteRepository = repo;
     }
 
