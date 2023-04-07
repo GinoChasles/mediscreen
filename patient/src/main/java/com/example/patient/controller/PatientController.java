@@ -1,6 +1,7 @@
 package com.example.patient.controller;
 
 import com.example.patient.model.Patient;
+import com.example.patient.service.PatientService;
 import com.example.patient.service.PatientServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class PatientController {
      * The Logger.
      */
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final PatientServiceImp patientServiceImp;
+    private final PatientService patientService;
 
     /**
      * Instantiates a new Patient controller.
@@ -30,7 +31,7 @@ public class PatientController {
      * @param service the service
      */
     public PatientController(PatientServiceImp service) {
-        patientServiceImp = service;
+        patientService = service;
     }
 
 
@@ -43,7 +44,7 @@ public class PatientController {
     @GetMapping("/{id}")
     public ResponseEntity<Patient> findById(@PathVariable(value = "id") long id) {
         logger.info("Searching patient with his id: " + id);
-        Optional<Patient> result = patientServiceImp.findById(id);
+        Optional<Patient> result = patientService.findById(id);
         if (result.isEmpty()) {
             logger.error("Patient not found");
             return ResponseEntity.notFound().build();
@@ -58,7 +59,7 @@ public class PatientController {
     @GetMapping("/")
     public ResponseEntity<List<Patient>> findAll() {
         logger.info("Searching all Patient");
-        List<Patient> patientList = patientServiceImp.findAll();
+        List<Patient> patientList = patientService.findAll();
         if (patientList.isEmpty()) {
             logger.error("Patients not found");
             return ResponseEntity.noContent().build();
@@ -77,7 +78,7 @@ public class PatientController {
     public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
         logger.info("Creating patient folder in system.");
 
-        return ResponseEntity.ok(patientServiceImp.insert(patient));
+        return ResponseEntity.ok(patientService.insert(patient));
     }
 
     /**
@@ -90,7 +91,7 @@ public class PatientController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Patient> update(@PathVariable(value = "id") int id, @Valid @RequestBody Patient patient) {
         logger.info("Starting updating patient...");
-        Patient patient1 = patientServiceImp.update(id, patient);
+        Patient patient1 = patientService.update(id, patient);
         if (patient1 == null) {
             logger.error("Patient with id :" + id + " is not found.");
             return ResponseEntity.notFound().build();
@@ -103,12 +104,12 @@ public class PatientController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") long id) {
         logger.info("Starting deleting note...");
-        Optional<Patient> result = patientServiceImp.findById(id);
+        Optional<Patient> result = patientService.findById(id);
         if (result.isEmpty()) {
             logger.error("Patient not found");
             return ResponseEntity.notFound().build();
         } else {
-            patientServiceImp.delete(id);
+            patientService.delete(id);
             logger.info("Patient is delete");
             return ResponseEntity.ok("Deleted");
         }

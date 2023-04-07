@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysqldb:
+    container_name: mysql_patient
+    image: mysql:5.7
+    volumes:
+      - ./data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: mediscreen_patients
+      MYSQL_HOST: mysql_patient
+    ports:
+      - "3306:3306"
+  patient:
+    depends_on:
+      - mysqldb
+    image: patient-image
+    ports:
+      - "8081:8081"
+    restart: always
+
+volumes:
+  db_data: {}
