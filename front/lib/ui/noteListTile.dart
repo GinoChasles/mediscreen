@@ -35,7 +35,7 @@ class _NoteListTileState extends State<NoteListTile> {
         children: [
           TableRow(children: [
             Center(
-              child: Text(widget.note.notes.toString(),
+              child: Text(widget.note.note.toString(),
                   softWrap: true,),
             ),
             IconButton(

@@ -57,7 +57,7 @@ class _NoteFormState extends State<NoteForm> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         Note note = Note.empty();
-                        note.notes = _noteController.text;
+                        note.note = _noteController.text;
                         note.patId = widget.patId;
                         note.key = widget.note?.key;
 

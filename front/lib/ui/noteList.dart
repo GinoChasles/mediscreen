@@ -43,14 +43,11 @@ class _NoteListState extends State<NoteList> {
           builder: (context, item, child) {
             return Container(
               height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Center(
-                  //   child: Text("Patient's Notes List"),
-                  // ),
                   Center(
                     child: ElevatedButton.icon(
                         onPressed: () async {

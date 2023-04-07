@@ -27,7 +27,7 @@ class _NoteFormUpdateState extends State<NoteFormUpdate> {
   @override
   void initState() {
     _noteController = TextEditingController();
-    _noteController.text = widget.note.notes ?? '';
+    _noteController.text = widget.note.note ?? '';
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _NoteFormUpdateState extends State<NoteFormUpdate> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         Note note = Note.empty();
-                        note.notes = _noteController.text;
+                        note.note = _noteController.text;
                         note.patId = widget.patId;
                         note.key = widget.note.key;
 

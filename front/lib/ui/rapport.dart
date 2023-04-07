@@ -26,24 +26,44 @@ class _RapportState extends State<Rapport> {
       future: assess,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          print(snapshot.data!.assessement);
+          
           return Scaffold(
             appBar: AppBar(
               title: const Text("Rapport"),
             ),
-            body: Container(
-              color: Colors.red,
-              height: 500,
-              child: Column(
-                children: [
-                  Text( snapshot.data!.firstName ?? 'no data'),
-                  Text( snapshot.data!.lastName ?? 'no data'),
-                  Text( snapshot.data!.age.toString() ?? 'no data'),
-                  Text( snapshot.data!.assessement ?? 'no data'),
-                ],
+            body: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 500,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('${snapshot.data!.lastName}  ${snapshot.data!.firstName}  ${snapshot.data!.age.toString()} ans'),
+                        // Text(snapshot.data!.firstName ?? 'no data '),
+                        // Text(snapshot.data!.lastName ?? 'no data'),
+                        // Text(snapshot.data!.age.toString() ?? 'no data'),
+                      ],
+                    ),
+                    Divider(thickness: 2.0,),
+                    Text(
+                      snapshot.data!.assessement ?? 'no data',
+                      style: TextStyle(
+                          color: snapshot.data!.assessement == "EARLYONSET" ||
+                                  snapshot.data!.assessement == "INDANGER"
+                              ? Colors.red
+                              : snapshot.data!.assessement == "BORDERLINE"
+                                  ? Colors.orange
+                                  : Colors.black),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
-        } else  {
+        } else {
           return const CircularProgressIndicator();
         }
       },

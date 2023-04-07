@@ -48,13 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width ,
-                child: PatientList()),
-                // child: NoteList(patient: patient,)),
+          children: [
+            Expanded(child: PatientList()),
           ],
         ),
       ),
