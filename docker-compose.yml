@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+     # MYSQL_PASSWORD: admin
+    ports:
+      - "3307:3306"
+  patient:
+    depends_on:
+      - mysqldb
+    image: patient-image
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3307/mediscreen_patients?autoReconnect=true&useSSL=false
+    ports:
+      - "8081:8081"
+    restart: always
+
+volumes:
+  db_data: {}
