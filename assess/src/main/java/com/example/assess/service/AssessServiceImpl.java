@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Assess service.
@@ -62,19 +63,19 @@ public class AssessServiceImpl implements AssessService {
             if (result.getAge() > Utils.ageLimitor && assessCompt == 2) {
                 result.setAssessement(Assess.BORDERLINE);
             }
-            if (result.getAge() < Utils.ageLimitor && patient.getGender() == "M" && assessCompt == 3) {
+            if (result.getAge() < Utils.ageLimitor && Objects.equals(patient.getGender(), "M") && assessCompt == 3) {
                 result.setAssessement(Assess.INDANGER);
             }
-            if (result.getAge() < Utils.ageLimitor && patient.getGender() == "F" && assessCompt == 4) {
+            if (result.getAge() < Utils.ageLimitor && Objects.equals(patient.getGender(), "F") && assessCompt == 4) {
                 result.setAssessement(Assess.INDANGER);
             }
             if (result.getAge() > Utils.ageLimitor && assessCompt == 6) {
                 result.setAssessement(Assess.INDANGER);
             }
-            if (result.getAge() < Utils.ageLimitor && patient.getGender() == "M" && assessCompt == 5) {
+            if (result.getAge() < Utils.ageLimitor && Objects.equals(patient.getGender(), "M") && assessCompt == 5) {
                 result.setAssessement(Assess.EARLYONSET);
             }
-            if (result.getAge() < Utils.ageLimitor && patient.getGender() == "F" && assessCompt == 7) {
+            if (result.getAge() < Utils.ageLimitor && Objects.equals(patient.getGender(), "F") && assessCompt == 7) {
                 result.setAssessement(Assess.EARLYONSET);
             }
             if (result.getAge() > Utils.ageLimitor && assessCompt >= 8) {

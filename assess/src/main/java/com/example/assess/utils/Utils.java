@@ -33,7 +33,6 @@ public class Utils {
                 "Réaction",
                 "Anticorps",
                 "Hemoglobin A1C",
-                "Microalbumine",
                 "Size",
                 "Weight",
                 "Smoker",
@@ -49,7 +48,6 @@ public class Utils {
                 compt++;
             }
         }
-
         return compt;
     }
 }
