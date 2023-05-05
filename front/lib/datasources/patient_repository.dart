@@ -23,7 +23,7 @@ class PatientRepository {
     List<Patient> patientList = [];
     try {
       dynamic res = await client.get(
-        Uri.parse("$URL/patient/"),
+        Uri.parse("$URL/patient"),
         headers: headers,
       );
       dynamic result = json.decode(res.body);

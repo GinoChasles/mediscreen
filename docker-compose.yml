@@ -1,24 +1,91 @@
-version: '3'
+version: '3.8'
 services:
   mysqldb:
     container_name: mysqldb
-    image: mysql:5.7
+    image: mysql:latest
     volumes:
       - db_data:/var/lib/mysql
     restart: always
     environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
       MYSQL_ROOT_PASSWORD: admin
-     # MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: mediscreen_patients
     ports:
       - "3307:3306"
-  patient:
-    depends_on:
-      - mysqldb
+    expose:
+      - "3307"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  mongodb:
+    image: mongo
+    volumes:
+      - db_data:/var/lib/mongodb
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    restart: always
+
+  patient-microservice:
     image: patient-image
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3307/mediscreen_patients?autoReconnect=true&useSSL=false
+    container_name: patient-microservice
+    build:
+      context: patient
+      dockerfile: Dockerfile
     ports:
       - "8081:8081"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+    restart: always
+    environment:
+      DATASOURCE_URL: mysqldb
+      DATASOURCE_PORT: 3306
+
+  notes-microservice:
+    image: notes-image
+    container_name: notes-microservice
+    build:
+      context: notes
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+    restart: always
+    environment:
+      DATASOURCE_URL: mongodb
+      DATASOURCE_PORT: 27017
+
+  assess-microservice:
+    image: assess-image
+    container_name: assess-microservice
+    build:
+      context: assess
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      PATIENT_URL: patient-microservice
+      NOTES_URL: notes-microservice
+
+  ui-microservice:
+    image: ui-image
+    container_name: ui-microservice
+    build:
+      context: front
+      dockerfile: Dockerfile
+    depends_on:
+      - patient-microservice
+      - notes-microservice
+      - assess-microservice
+    ports:
+      - "8000:80"
     restart: always
 
 volumes:

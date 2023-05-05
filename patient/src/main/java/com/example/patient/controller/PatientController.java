@@ -56,7 +56,7 @@ public class PatientController {
 
 
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Patient>> findAll() {
         logger.info("Searching all Patient");
         List<Patient> patientList = patientService.findAll();

@@ -47,4 +47,16 @@ public interface PatientService {
      * @param id the id
      */
     void delete(long id);
+
+    /**
+     * Delete all.
+     */
+    void deleteAll();
+
+    /**
+     * Insert all.
+     *
+     * @param patientList the patient list
+     */
+    void insertAll(List<Patient> patientList);
 }

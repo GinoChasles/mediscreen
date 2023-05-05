@@ -60,4 +60,14 @@ public class PatientServiceImp implements PatientService {
     public void delete(long id) {
         patientsRepo.deleteById(id);
     }
+
+    @Override
+    public void deleteAll() {
+        patientsRepo.deleteAll();
+    }
+
+    @Override
+    public void insertAll(List<Patient> patientList) {
+        patientsRepo.saveAll(patientList);
+    }
 }

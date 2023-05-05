@@ -55,7 +55,7 @@ public class PatientControllerTest {
     @Test
     public void addPatientTest() throws Exception {
         Date newDate = new Date(1912 / 12 / 12);
-        Patient patientZero = new Patient("Béber", "LaCouille", newDate, "F", "3 rue bidon", "07491888255");
+        Patient patientZero = new Patient("PrenomTest", "test", newDate, "F", "3 rue bidon", "07491888255");
         String json = mapper.writeValueAsString(patientZero);
         MockHttpServletRequestBuilder mock = MockMvcRequestBuilders
                 .post("/patient/add")

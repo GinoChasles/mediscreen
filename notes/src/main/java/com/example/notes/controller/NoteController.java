@@ -40,7 +40,7 @@ public class NoteController {
      * @param id the id
      * @return the response entity
      */
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<Note> findById(@PathVariable(value = "id") String id) {
         logger.info("Searching note with his id: " + id);
         Optional<Note> result = noteService.findById(id);
@@ -51,14 +51,14 @@ public class NoteController {
             logger.info("note found : " + result);
             return ResponseEntity.ok().body(result.get());
         }
-    }
+    }*/
 
     /**
      * Find all response entity.
      *
      * @return the response entity
      */
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Note>> findAll() {
         logger.info("Searching all notes");
         List<Note> noteList = noteService.findAll();
@@ -153,7 +153,7 @@ public class NoteController {
 
     }
 
-    @DeleteMapping(value = "/")
+    @DeleteMapping
     public ResponseEntity<?> deleteAll() {
         logger.info("Starting deleting all notes...");
         noteService.deleteAll();
